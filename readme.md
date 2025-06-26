@@ -18,6 +18,8 @@ GoFrame é um framework PHP simples para criação de APIs e aplicações web, f
    ```
 
 3. **Configure o arquivo `.env`:**
+
+   ```sh
    DB_HOST=casadojairo.ddns.net
    DB_DATABASE=teste
    DB_USERNAME=jairo
@@ -25,6 +27,8 @@ GoFrame é um framework PHP simples para criação de APIs e aplicações web, f
    DB_CHARSET=utf8mb4
 
    APP_BASE_PATH=/GoFrame
+
+   ```
 
 4. **Configure o servidor web:**
 
