@@ -7,7 +7,7 @@ GoFrame é um framework PHP simples para criação de APIs e aplicações web, f
 1. **Clone o repositório:**
 
    ```sh
-   git clone https://github.com/seu-usuario/go-frame.git folder
+   git clone https://github.com/JairoJeffersont/GoFrame.git folder
    cd folder
    ```
 
