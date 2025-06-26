@@ -39,9 +39,10 @@ class User extends BaseModel {
      */
     protected array $columns = [
         'id' => [
-            'type' => 'varchar(36)',
+            'type' => 'int',
             'required' => true,
-            'primary' => true
+            'primary' => true,
+            'auto_increment' => true
         ],
         'name' => [
             'type' => 'varchar(36)',
@@ -51,9 +52,6 @@ class User extends BaseModel {
             'type' => 'varchar(36)',
             'required' => true,
             'unique' => true
-        ],
-        'foto' => [
-            'type' => 'varchar(100)'
         ]
     ];
 

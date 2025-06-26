@@ -47,7 +47,11 @@ class Validation {
         $missing_fields = [];
 
         foreach ($array_to_compare as $field => $rules) {
-            if (!empty($rules['required']) && !array_key_exists($field, $array_to_verify)) {
+            if (
+                !empty($rules['required']) &&
+                !array_key_exists($field, $array_to_verify) &&
+                (empty($rules['primary']) || $rules['primary'] === false)
+            ) {
                 $missing_fields[] = $field;
             }
         }
