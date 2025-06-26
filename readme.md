@@ -7,8 +7,8 @@ GoFrame é um framework PHP simples para criação de APIs e aplicações web, f
 1. **Clone o repositório:**
 
    ```sh
-   git clone https://github.com/seu-usuario/go-frame.git
-   cd go-frame
+   git clone https://github.com/seu-usuario/go-frame.git folder
+   cd folder
    ```
 
 2. **Instale as dependências via Composer:**
@@ -26,25 +26,14 @@ GoFrame é um framework PHP simples para criação de APIs e aplicações web, f
    DB_PASSWORD=root
    DB_CHARSET=utf8mb4
 
-   APP_BASE_PATH=/GoFrame
+   APP_BASE_PATH=/folder
 
    ```
 
-4. **Configure o servidor web:**
-
-   - Aponte o DocumentRoot para a pasta `public/`.
-   - Certifique-se de que o módulo de reescrita (mod_rewrite) está habilitado no Apache.
-
-5. **Acesse no navegador:**
+4. **Acesse no navegador:**
    ```
-   http://localhost/GoFrame
+   http://localhost/folder
    ```
-
-## Estrutura
-
-- `src/` - Código fonte do framework (Controllers, Models, Core, Helpers, etc)
-- `public/` - Pasta pública para acesso web (index.php)
-- `.env` - Configurações de ambiente (banco de dados, etc)
 
 ## Requisitos
 
