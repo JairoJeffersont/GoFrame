@@ -2,6 +2,7 @@
 
 use GoFrame\Core\Router;
 use GoFrame\Controllers\UserController;
+use GoFrame\Controllers\GabineteController;
 
 return function (Router $router) {
     

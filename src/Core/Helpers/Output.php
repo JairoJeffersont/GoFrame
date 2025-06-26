@@ -7,7 +7,6 @@ class Output {
 
         if (isset($array['status_code'])) {
             http_response_code($array['status_code']);
-           
         }
 
         header('Content-Type: application/json; charset=utf-8');
