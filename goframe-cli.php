@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 function prompt(string $message, $default = ''): string {
@@ -29,22 +30,20 @@ function exportArrayPretty(array $array, int $level = 2): string {
     return $code;
 }
 
-
-$modelName = prompt("Nome do modelo (ex: User)");
-$tableName = prompt("Nome da tabela (ex: users)", strtolower($modelName) . 's');
-$sync = promptYesNo("Sincronizar estrutura da tabela?", false);
+$modelName = prompt("Model name (e.g.: User)");
+$tableName = prompt("Table name (e.g.: users)", strtolower($modelName) . 's');
+$sync = promptYesNo("Synchronize table structure?", false);
 
 $columns = [];
 do {
-    $colName = prompt("Nome da coluna (ou ENTER para terminar)");
+    $colName = prompt("Column name (or press ENTER to finish)");
     if (!$colName) break;
 
-    $type = prompt("Tipo (ex: varchar(36), int, text)");
-    $required = promptYesNo("Obrigatória?", true);
-    $primary = promptYesNo("Chave primária?", false);
-    $autoIncrement = promptYesNo("Auto incremento?", false);
-    $unique = promptYesNo("Única?", false);
-
+    $type = prompt("Type (e.g.: varchar(36), int, text)");
+    $required = promptYesNo("Required?", true);
+    $primary = promptYesNo("Primary key?", false);
+    $autoIncrement = promptYesNo("Auto increment?", false);
+    $unique = promptYesNo("Unique?", false);
 
     $column = [
         'type' => $type,
@@ -57,7 +56,7 @@ do {
     $columns[$colName] = $column;
 } while (true);
 
-// Geração do código
+// Generate model code
 $columnsExport = exportArrayPretty($columns, 2);
 $syncValue = $sync ? 'true' : 'false';
 
@@ -94,7 +93,7 @@ class $modelName extends BaseModel {
 }
 PHP;
 
-// Salvando em arquivo
+// Save file
 $filename = __DIR__ . "/src/Models/$modelName.php";
 file_put_contents($filename, $modelCode);
-echo "✅ Modelo gerado com sucesso: $filename\n";
+echo "✅ Model successfully generated: $filename\n";
