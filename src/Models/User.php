@@ -2,7 +2,7 @@
 
 namespace GoFrame\Models;
 
-use GoFrame\Core\Mysql\BaseModel;
+use GoFrame\Core\Database\BaseModel;
 
 /**
  * Class User

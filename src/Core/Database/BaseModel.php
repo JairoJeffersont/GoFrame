@@ -1,6 +1,6 @@
 <?php
 
-namespace GoFrame\Core\Mysql;
+namespace GoFrame\Core\Database;
 
 use GoFrame\Config\Database;
 use PDO;
@@ -105,7 +105,7 @@ abstract class BaseModel {
 
             $sql = "CREATE TABLE `$tableName` (" . implode(", ", $colDefs) . ")";
             $this->db->exec($sql);
-            return; // já está tudo criado, não precisa continuar
+            return; 
         }
 
         // A tabela existe, segue com a sincronização normal
