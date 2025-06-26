@@ -170,6 +170,7 @@ class UserController {
      */
     public function create($data) {
         try {
+           
             $errors = $this->validation->validateFields($data, $this->userModel->getColumns());
 
             if (!empty($errors)) {
@@ -217,7 +218,7 @@ class UserController {
      * @return void
      */
     public function update($id, $data) {
-        try {
+        try {             
             $errors = $this->validation->validateFields($data, $this->userModel->getColumns());
 
             if (!empty($errors['incorrect_fields'])) {

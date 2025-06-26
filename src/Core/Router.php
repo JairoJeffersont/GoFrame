@@ -18,6 +18,7 @@ namespace GoFrame\Core;
  * Example usage:
  * ```php
  * $router = new Router();
+ * $router->setBasePath('/minha-app');
  * $router->get('/users/{id}', [UserController::class, 'show']);
  * $router->post('/users', [UserController::class, 'create']);
  * $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -34,75 +35,68 @@ class Router {
     private array $routes = [];
 
     /**
-     * Registers a GET route.
+     * Caminho base da aplicação (caso esteja em um subdiretório)
      * 
-     * @param string $route URI pattern, supports parameters in `{param}` format.
-     * @param array $handler Controller class and method to handle the route, e.g. [ControllerClass::class, 'method'].
+     * @var string
+     */
+    private string $basePath = '';
+
+    /**
+     * Define o caminho base da aplicação.
+     * 
+     * @param string $basePath Ex: '/minha-app'
      * @return void
      */
+    public function setBasePath(string $basePath): void {
+        $this->basePath = rtrim($basePath, '/');
+    }
+
     public function get(string $route, array $handler): void {
         $this->routes['GET'][$route] = $handler;
     }
 
-    /**
-     * Registers a POST route.
-     * 
-     * @param string $route URI pattern, supports parameters in `{param}` format.
-     * @param array $handler Controller class and method to handle the route.
-     * @return void
-     */
     public function post(string $route, array $handler): void {
         $this->routes['POST'][$route] = $handler;
     }
 
-    /**
-     * Registers a PUT route.
-     * 
-     * @param string $route URI pattern, supports parameters in `{param}` format.
-     * @param array $handler Controller class and method to handle the route.
-     * @return void
-     */
     public function put(string $route, array $handler): void {
         $this->routes['PUT'][$route] = $handler;
     }
 
-    /**
-     * Registers a DELETE route.
-     * 
-     * @param string $route URI pattern, supports parameters in `{param}` format.
-     * @param array $handler Controller class and method to handle the route.
-     * @return void
-     */
+    public function patch(string $route, array $handler): void {
+        $this->routes['PATCH'][$route] = $handler;
+    }
+
     public function delete(string $route, array $handler): void {
         $this->routes['DELETE'][$route] = $handler;
     }
 
     /**
-     * Dispatches the HTTP request to the matched route handler.
+     * Despacha a requisição HTTP para a rota correspondente.
      * 
-     * Matches the given HTTP method and URI against registered routes.
-     * If a match is found, instantiates the controller and calls the method with route parameters.
-     * For POST and PUT methods, appends $_REQUEST data as the last argument.
-     * 
-     * If no route matches, outputs a 404 JSON response.
-     * 
-     * @param string $method HTTP method (GET, POST, PUT, DELETE).
-     * @param string $uri Request URI.
+     * @param string $method Método HTTP (GET, POST, PUT, DELETE)
+     * @param string $uri URI da requisição
      * @return void
      */
     public function dispatch(string $method, string $uri): void {
-        $uri = rtrim(parse_url($uri, PHP_URL_PATH), '/');
+        $path = rtrim(parse_url($uri, PHP_URL_PATH), '/');
+
+        // Remove o basePath, se definido
+        if ($this->basePath && str_starts_with($path, $this->basePath)) {
+            $path = substr($path, strlen($this->basePath));
+            $path = $path ?: '/';
+        }
 
         foreach ($this->routes[$method] ?? [] as $route => $handler) {
             $pattern = preg_replace('#\{[^}]+\}#', '([^/]+)', $route);
             $pattern = "#^" . rtrim($pattern, '/') . "$#";
 
-            if (preg_match($pattern, $uri, $matches)) {
+            if (preg_match($pattern, $path, $matches)) {
                 array_shift($matches);
                 [$controllerClass, $methodName] = $handler;
                 $controller = new $controllerClass();
 
-                if (in_array($method, ['POST', 'PUT'])) {
+                if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
                     $matches[] = $_REQUEST;
                 }
 
@@ -119,8 +113,8 @@ class Router {
     }
 
     /**
-     * Default route handler (index route).
-     * Outputs a 200 success JSON response.
+     * Rota padrão (root /).
+     * Retorna sucesso em JSON.
      * 
      * @return void
      */
