@@ -1,16 +1,16 @@
 # GoFrame
 
-GoFrame is a simple and complete PHP framework for rapid development of small to medium-sized projects. It provides a minimal MVC structure, routing, database abstraction with automatic table synchronization, validation, logging, and JSON output handling.
+GoFrame is a lightweight PHP framework that helps you quickly build small to medium web projects. It comes with everything you need to organize your code, connect to a database, and create APIs easily.
 
-## Features
+## Main Features
 
-- **MVC Structure**: Organized folders for Controllers, Models, and Core logic.
-- **Routing**: Simple HTTP router with support for route parameters and RESTful methods.
-- **Database Abstraction**: PDO-based singleton connection, automatic table synchronization, and CRUD operations.
-- **Validation**: Utility for validating input data against model rules.
-- **Logging**: File-based logging with support for log levels.
-- **JSON Output**: Consistent API responses with status codes.
-- **Environment Configuration**: Uses `.env` for secure configuration.
+- **Easy Structure:** Organize your code with folders for controllers, models, and core logic.
+- **Simple Routing:** Set up URLs for your app and connect them to your code.
+- **Database Ready:** Connects to MySQL and can create tables automatically.
+- **Validation:** Check if the data sent to your app is correct.
+- **Logging:** Save important messages or errors to log files.
+- **JSON Output:** Sends responses in JSON format, perfect for APIs.
+- **Environment Settings:** Use a `.env` file to keep your database and app settings safe.
 
 ## Project Structure
 
@@ -20,33 +20,22 @@ public/
     index.php
 src/
     Config/
-        Database.php
     Controllers/
-        UserController.php
     Core/
-        Router.php
-        Helpers/
-            Output.php
-            Logger.php
-            Validation.php
-            Mysql/
     Models/
-        User.php
     routes/
-        web.php
 vendor/
-    (Composer dependencies)
 goframe-cli.php
 composer.json
 ```
 
 ## Requirements
 
-- PHP 8.0 or higher
+- PHP 8.0 or newer
 - Composer
-- MySQL database
+- MySQL
 
-## Installation
+## Getting Started
 
 1. **Clone the repository:**
    ```sh
@@ -59,52 +48,32 @@ composer.json
    composer install
    ```
 
-3. **Configure environment:**
-   - Copy `.env.example` to `.env` (if needed) and set your database credentials.
+3. **Set up your environment:**
+   - Edit the `.env` file with your database details.
 
-4. **Set up web server:**
-   - Point your web server's document root to the `public/` directory.
+4. **Start your server:**
+   - Point your web server to the `public/` folder.
 
-## Usage
+## How to Use
 
-### Routing
+- **Routes:**  
+  Set up your app's URLs in [`src/routes/web.php`](src/routes/web.php).
 
-Define your routes in [`src/routes/web.php`](src/routes/web.php):
+- **Controllers:**  
+  Write your logic in controller files, like [`src/Controllers/UserController.php`](src/Controllers/UserController.php).
 
-```php
-$router->get('/users', [UserController::class, 'getAll']);
-$router->post('/users', [UserController::class, 'create']);
-```
+- **Models:**  
+  Describe your database tables in model files, like [`src/Models/User.php`](src/Models/User.php).
 
-### Controllers
-
-Controllers handle HTTP requests and interact with models. Example: [`GoFrame\Controllers\UserController`](src/Controllers/UserController.php).
-
-### Models
-
-Models extend [`GoFrame\Core\Mysql\BaseModel`](src/Core/Mysql/BaseModel.php) and define table structure and columns. Example: [`GoFrame\Models\User`](src/Models/User.php).
-
-### Database
-
-Database connection is managed by [`GoFrame\Config\Database`](src/Config/Database.php) using PDO and environment variables.
-
-### Logging
-
-Use [`GoFrame\Core\Helpers\Logger`](src/Core/Helpers/Logger.php) for file-based logging.
-
-### Validation
-
-Use [`GoFrame\Core\Helpers\Validation`](src/Core/Helpers/Validation.php) to validate input data against model rules.
-
-### CLI Model Generator
-
-Generate new models interactively:
-```sh
-php goframe-cli.php
-```
+- **Create Models Easily:**  
+  Run the command below and answer the questions to generate a new model:
+  ```sh
+  php goframe-cli.php
+  ```
 
 ## Example API Request
 
+Send a new user to your API:
 ```sh
 curl -X POST http://localhost/users \
      -H "Content-Type: application/json" \
@@ -117,5 +86,4 @@ MIT
 
 ---
 
-**Author:** Jairo Santos  
-**Project:**
+**Author:** Jairo Santos
