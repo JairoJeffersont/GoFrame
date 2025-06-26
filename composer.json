@@ -1,0 +1,22 @@
+{
+    "name": "jairosantos/go-frame",
+    "description": "A complete PHP framework for simple projects.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "GoFrame\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jairo Santos",
+            "email": "jairojeffersont@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "ramsey/uuid": "^4.9"
+    }
+}
