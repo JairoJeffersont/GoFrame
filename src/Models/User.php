@@ -51,6 +51,9 @@ class User extends BaseModel {
             'type' => 'varchar(36)',
             'required' => true,
             'unique' => true
+        ],
+        'foto' => [
+            'type' => 'varchar(100)'
         ]
     ];
 

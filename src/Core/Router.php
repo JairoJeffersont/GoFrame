@@ -5,20 +5,19 @@ namespace GoFrame\Core;
 /**
  * Class Router
  * 
- * Simple HTTP router for registering routes and dispatching requests to controllers.
- * Supports GET, POST, PUT, and DELETE HTTP methods.
+ * A simple HTTP router for registering and dispatching routes to controller methods.
+ * Supports GET, POST, PUT, PATCH, and DELETE HTTP methods.
  * 
- * Routes can include parameters using `{param}` syntax, which will be passed as arguments
- * to the controller method.
+ * Routes can contain parameters using `{param}` syntax, which will be passed as method arguments.
+ * For POST, PUT, and PATCH requests, the request data ($_REQUEST) is appended as the last argument.
  * 
- * For POST and PUT requests, the request data ($_REQUEST) is appended as the last argument.
+ * It also supports setting a base path if the application is hosted in a subdirectory.
  * 
- * If no matching route is found, returns a 404 response with JSON output.
+ * If no route matches the request, a 404 JSON response is returned.
  * 
  * Example usage:
  * ```php
- * $router = new Router();
- * $router->setBasePath('/minha-app');
+ * $router = new Router(); 
  * $router->get('/users/{id}', [UserController::class, 'show']);
  * $router->post('/users', [UserController::class, 'create']);
  * $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -28,60 +27,99 @@ namespace GoFrame\Core;
  */
 class Router {
     /**
-     * Array of registered routes by HTTP method
+     * Array of registered routes by HTTP method.
      * 
-     * @var array<string, array<string, array>> 
+     * @var array<string, array<string, array>>
      */
     private array $routes = [];
 
     /**
-     * Caminho base da aplicação (caso esteja em um subdiretório)
+     * Base path of the application (useful if it's hosted in a subdirectory).
      * 
      * @var string
      */
     private string $basePath = '';
 
     /**
-     * Define o caminho base da aplicação.
+     * Sets the base path for the application.
      * 
-     * @param string $basePath Ex: '/minha-app'
+     * @param string $basePath Example: '/my-app'
      * @return void
      */
     public function setBasePath(string $basePath): void {
         $this->basePath = rtrim($basePath, '/');
     }
 
+    /**
+     * Registers a GET route.
+     * 
+     * @param string $route
+     * @param array $handler
+     * @return void
+     */
     public function get(string $route, array $handler): void {
         $this->routes['GET'][$route] = $handler;
     }
 
+    /**
+     * Registers a POST route.
+     * 
+     * @param string $route
+     * @param array $handler
+     * @return void
+     */
     public function post(string $route, array $handler): void {
         $this->routes['POST'][$route] = $handler;
     }
 
+    /**
+     * Registers a PUT route.
+     * 
+     * @param string $route
+     * @param array $handler
+     * @return void
+     */
     public function put(string $route, array $handler): void {
         $this->routes['PUT'][$route] = $handler;
     }
 
+    /**
+     * Registers a PATCH route.
+     * 
+     * @param string $route
+     * @param array $handler
+     * @return void
+     */
     public function patch(string $route, array $handler): void {
         $this->routes['PATCH'][$route] = $handler;
     }
 
+    /**
+     * Registers a DELETE route.
+     * 
+     * @param string $route
+     * @param array $handler
+     * @return void
+     */
     public function delete(string $route, array $handler): void {
         $this->routes['DELETE'][$route] = $handler;
     }
 
     /**
-     * Despacha a requisição HTTP para a rota correspondente.
+     * Dispatches the incoming request to the appropriate route handler.
      * 
-     * @param string $method Método HTTP (GET, POST, PUT, DELETE)
-     * @param string $uri URI da requisição
+     * Matches the URI against registered routes and invokes the controller method.
+     * If the method is POST, PUT, or PATCH, $_REQUEST is passed as the last parameter.
+     * 
+     * Returns a 404 JSON response if no route matches.
+     * 
+     * @param string $method HTTP method (GET, POST, PUT, PATCH, DELETE)
+     * @param string $uri Request URI
      * @return void
      */
     public function dispatch(string $method, string $uri): void {
         $path = rtrim(parse_url($uri, PHP_URL_PATH), '/');
 
-        // Remove o basePath, se definido
         if ($this->basePath && str_starts_with($path, $this->basePath)) {
             $path = substr($path, strlen($this->basePath));
             $path = $path ?: '/';
@@ -113,8 +151,9 @@ class Router {
     }
 
     /**
-     * Rota padrão (root /).
-     * Retorna sucesso em JSON.
+     * Default index route (e.g., when accessing '/').
+     * 
+     * Returns a 200 success JSON response.
      * 
      * @return void
      */
