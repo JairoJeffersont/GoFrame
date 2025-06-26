@@ -53,7 +53,7 @@ class UserController {
      * @return void
      */
     public function getAll() {
-        try {
+        try {            
             $users = $this->userModel->findAll();
 
             if (empty($users['data'])) {
@@ -227,6 +227,14 @@ class UserController {
                     'error' => $errors
                 ]);
                 return;
+            }
+
+            $busca = $this->userModel->findOne('id', $id);
+            if (empty($busca)) {
+                $this->output->buildOutput([
+                    'status' => 'not_found',
+                    'status_code' => '404'
+                ]);
             }
 
             $this->userModel->update('id', $id, $data);

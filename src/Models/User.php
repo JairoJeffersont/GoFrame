@@ -21,7 +21,7 @@ class User extends BaseModel {
     /**
      * @var bool Whether to synchronize the table structure on object creation.
      */
-    protected bool $sync = false; //WARNING!! WHEN SYNCHRONIZING THE TABLE DATA MODEL, DATA WILL BE LOST!
+    protected bool $sync = true; //WARNING!! WHEN SYNCHRONIZING THE TABLE DATA MODEL, DATA WILL BE LOST!
 
     /**
      * @var array Definition of columns and their properties for synchronization.
